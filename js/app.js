@@ -15,19 +15,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     img.src = window.APP_PATHS?.logo || 'assets/images/logo.png';
   });
 
-  const darkToggle = document.querySelector('[data-theme-toggle]');
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark');
-  }
-
-  if (darkToggle) {
-    darkToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
-  }
-
   document.querySelectorAll('[data-nav-group]').forEach(group => {
     const key = `navGroup:${group.dataset.navGroup || 'default'}`;
     const toggle = group.querySelector('[data-nav-group-toggle]');

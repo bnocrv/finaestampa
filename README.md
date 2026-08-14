@@ -1,108 +1,135 @@
 # Sistema de Controle Operacional de Carregamento
 
-Sistema web estático para registrar carregamentos de veículos com Supabase Auth, cadastros de funcionários e veículos, planilha operacional, dashboard, relatórios, dark mode e exportação CSV.
+Sistema web institucional para registrar operações de carregamento de veículos com autenticação no Supabase, planilha operacional, dashboard, cadastros de funcionários e veículos, relatórios e exportação CSV.
 
-## Estrutura
+## Visão geral do projeto
+
+Este sistema foi pensado para uso diário em operação logística, com foco em rapidez, organização e uma experiência de planilha profissional. A interface foi estruturada para funcionar como uma ferramenta de uso operacional, com navegação lateral, dados em tempo real via Supabase e fluxo de movimentação claro para o dia a dia.
+
+## Estrutura do projeto
 
 ```text
 /
-+-- index.html
-+-- login.html
-+-- table.html
-+-- employees.html
-+-- vehicles.html
-+-- reports.html
-+-- etiquetas/
-|   +-- index.html
-|   +-- styles.css
-|   +-- script.js
-|   +-- produtos.js
-|   +-- produtos.csv
-+-- expedicao/
-|   +-- index.html
-|   +-- assets/
-|   +-- css/
-|   +-- data/
-|   +-- js/
-|   +-- scripts/
-+-- assets/
-|   +-- images/logo.png
-|   +-- icons/favicon.png
-+-- css/
-|   +-- variables.css
-|   +-- base.css
-|   +-- layout.css
-|   +-- components.css
-|   +-- responsive.css
-+-- js/
-|   +-- app.js
-|   +-- config.js
-|   +-- supabase.js
-|   +-- table.js
-|   +-- dashboard.js
-|   +-- employees.js
-|   +-- vehicles.js
-|   +-- reports.js
-|   +-- utils.js
-+-- sql/setup.sql
-+-- vercel.json
-+-- .env.example
+├── index.html
+├── login.html
+├── table.html
+├── employees.html
+├── vehicles.html
+├── reports.html
+├── assets/
+│   ├── images/
+│   └── icons/
+├── css/
+│   ├── variables.css
+│   ├── base.css
+│   ├── layout.css
+│   ├── components.css
+│   └── responsive.css
+├── js/
+│   ├── app.js
+│   ├── config.js
+│   ├── supabase.js
+│   ├── table.js
+│   ├── dashboard.js
+│   ├── employees.js
+│   ├── vehicles.js
+│   ├── reports.js
+│   └── utils.js
+├── etiquetas/
+│   ├── index.html
+│   ├── styles.css
+│   ├── script.js
+│   ├── produtos.js
+│   └── produtos.csv
+├── expedicao/
+│   ├── index.html
+│   ├── assets/
+│   ├── css/
+│   ├── data/
+│   ├── js/
+│   └── scripts/
+├── sql/
+│   └── setup.sql
+├── .env.example
+├── vercel.json
+├── README.md
+└── assets/images/logo.png
 ```
+
+## Funcionalidades principais
+
+- Login com Supabase Auth
+- Sessão persistente e proteção de páginas internas
+- Sidebar com navegação por módulos
+- Planilha operacional com colunas de data, veículo, volumes, movimentador, carregador e organizador
+- Edição direta por célula
+- Busca, filtros e paginação
+- Validação de volumes e seleção por dropdowns
+- Cadastro de funcionários com status ativo/inativo
+- Cadastro de veículos com status ativo/inativo
+- Dashboard com indicadores do dia e do mês
+- Relatórios com total de carregamentos, volumes e média por operação
+- Exportação CSV
+- Toasts, empty states, footer institucional e visual limpo
+- Preparação para integração com Supabase e deploy na Vercel
 
 ## 1. Criar o projeto no Supabase
 
-1. Acesse `https://supabase.com`.
-2. Crie um novo projeto.
-3. Abra `Settings > API`.
-4. Copie o `Project URL` e a chave `anon public`.
+1. Acesse https://supabase.com
+2. Crie um novo projeto
+3. Abra `Settings > API`
+4. Copie:
+   - `Project URL`
+   - `anon public key`
 
-Nunca use a `service_role key` no frontend.
+Nunca exponha a `service_role key` no frontend.
 
 ## 2. Executar o SQL
 
-1. No Supabase, abra `SQL Editor`.
-2. Crie uma nova query.
-3. Cole o conteúdo de [sql/setup.sql](sql/setup.sql).
-4. Execute a query.
+1. No painel do Supabase, vá em `SQL Editor`
+2. Crie uma nova query
+3. Cole o conteúdo do arquivo [sql/setup.sql](sql/setup.sql)
+4. Execute a query
 
-O script cria `profiles`, `employees`, `vehicles`, `loadings`, `audit_logs`, índices, triggers e políticas RLS.
+O script cria as tabelas:
 
-## 3. Configurar Supabase no frontend
+- `profiles`
+- `employees`
+- `vehicles`
+- `loadings`
+- `audit_logs`
 
-Este projeto é HTML estático. Para rodar sem build, informe os valores nos blocos abaixo em cada HTML:
+Além disso, cria índices, triggers, RLS e políticas de acesso.
 
-```html
-<script>
-  window.SUPABASE_URL = "https://SEU_PROJETO.supabase.co";
-  window.SUPABASE_ANON_KEY = "sua-chave-publica";
-</script>
-```
+## 3. Configurar as variáveis
 
-O arquivo `.env.example` documenta os nomes usados em hospedagens e futuras automações:
+Crie um arquivo `.env` com base no [.env.example](.env.example):
 
 ```env
-SUPABASE_URL=
-SUPABASE_ANON_KEY=
+SUPABASE_URL=https://SEU_PROJETO.supabase.co
+SUPABASE_ANON_KEY=sua-chave-publica
 ```
+
+No frontend, o projeto também pode receber valores via `window.SUPABASE_URL` e `window.SUPABASE_ANON_KEY` nos arquivos HTML, caso queira substituir temporariamente a configuração em ambiente local.
 
 ## 4. Criar o primeiro usuário
 
-1. No Supabase, acesse `Authentication > Users`.
-2. Clique em `Add user`.
-3. Crie o usuário com e-mail e senha.
-4. Entre pelo `login.html`.
+1. Vá em `Authentication > Users` no Supabase
+2. Clique em `Add user`
+3. Cadastre o usuário com e-mail e senha
+4. Faça login na tela de autenticação do sistema
 
 Não há cadastro público de usuários.
 
-## 5. Executar localmente
+## 5. Como rodar localmente
 
-Use um servidor estático simples:
+No terminal, na pasta do projeto:
 
 ```bash
 python -m http.server 8000
 ```
 
-Depois acesse:
+Depois abra:
 
 ```text
 http://localhost:8000/login.html
@@ -110,34 +137,64 @@ http://localhost:8000/login.html
 
 ## 6. Deploy na Vercel
 
-1. Importe o repositório na Vercel.
-2. Mantenha o projeto como estático.
-3. Configure as variáveis `SUPABASE_URL` e `SUPABASE_ANON_KEY` no painel da Vercel para referência do projeto.
-4. Como não há etapa de build, mantenha também os valores públicos nos blocos `window.SUPABASE_*` dos HTML ou adicione uma etapa própria para gerar `js/config.js`.
+1. Faça login na Vercel
+2. Importe este repositório
+3. Mantenha a raiz do projeto como pasta principal
+4. Configure as variáveis de ambiente:
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+5. Faça o deploy
 
-## 7. Substituir logo e favicon
+O arquivo [vercel.json](vercel.json) já foi preparado para uso estático básico.
 
-Os arquivos atuais ficam em:
+## 7. Trocar logo e favicon
+
+Os arquivos atuais estão em:
 
 - `assets/images/logo.png`
 - `assets/icons/favicon.png`
 
-Para trocar a identidade visual, substitua esses arquivos ou altere os caminhos em [js/config.js](js/config.js).
+Para trocar a identidade visual do sistema, substitua os arquivos e mantenha os nomes atuais ou ajuste os caminhos em [index.html](index.html), [login.html](login.html) e [js/config.js](js/config.js).
 
-## Funcionalidades
+## 8. Observações importantes
 
-- Login e logout com Supabase Auth.
-- Proteção das páginas internas.
-- Planilha com edição inline, filtros, busca, paginação, validação de volumes, exportação CSV e realtime.
-- Cadastros de funcionários e veículos com status ativo/inativo.
-- Dashboard calculado a partir dos carregamentos.
-- Relatórios com filtro por período e exportação CSV.
-- Modo claro/escuro salvo no navegador.
-- Toasts, empty states e modal próprio para exclusão.
-- Footer institucional padronizado com frase, marca, versão e ano.
-- Módulo de etiquetas integrado em `etiquetas/`, vindo de `bnocrv/sistema-etiqueta`.
-- Módulo de expedição integrado em `expedicao/`, vindo de `bnocrv/expedicao`.
+- Este projeto foi estruturado para funcionar em HTML, CSS e JavaScript puro.
+- Funcionários e veículos inativos deixam de aparecer em novos dropdowns da planilha.
+- Registros antigos continuam preservados corretamente por relacionamento no banco.
+- A exportação atual está pronta para CSV.
+- O sistema foi organizado para permitir evolução sem quebrar a base.
 
-## Observações
+## 9. Módulos integrados
 
-Os dropdowns usam `select` nativo para manter o projeto leve. Funcionários e veículos inativos deixam de aparecer para novas seleções, enquanto registros antigos continuam preservados no banco por chave estrangeira com `on delete set null`.
+Além do núcleo operacional, o projeto também inclui módulos complementares:
+
+- `etiquetas/`: geração de etiquetas
+- `expedicao/`: gestão de expedição
+
+Esses módulos fazem parte do mesmo conjunto de ferramentas e podem evoluir separadamente sem atrapalhar o fluxo principal.
+
+## 10. Fluxo de uso esperado
+
+1. Login
+2. Dashboard
+3. Planilha
+4. Novo registro
+5. Editar e salvar
+6. Filtrar
+7. Cadastrar funcionários
+8. Cadastrar veículos
+9. Consultar relatórios
+10. Logout
+
+## 11. Resumo da stack
+
+- HTML
+- CSS
+- JavaScript
+- Supabase
+- Vercel
+- SQL para estrutura de banco e RLS
+
+## Licença
+
+Projeto interno para uso operacional e organização de processos logísticos.
