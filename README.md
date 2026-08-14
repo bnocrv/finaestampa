@@ -1,12 +1,51 @@
-# Sistema de Controle Operacional de Carregamento
+# Finaestampa
 
-Sistema web institucional para registrar operações de carregamento de veículos com autenticação no Supabase, planilha operacional, dashboard, cadastros de funcionários e veículos, relatórios e exportação CSV.
+Sistema operacional de controle logístico para registro, acompanhamento e gestão de operações de carregamento de veículos.
 
-## Visão geral do projeto
+## Visão Geral
 
-Este sistema foi pensado para uso diário em operação logística, com foco em rapidez, organização e uma experiência de planilha profissional. A interface foi estruturada para funcionar como uma ferramenta de uso operacional, com navegação lateral, dados em tempo real via Supabase e fluxo de movimentação claro para o dia a dia.
+O projeto foi desenvolvido para centralizar o processo operacional de carregamento em uma interface funcional, enxuta e profissional, simulando uma experiência de planilha empresarial com navegação de dashboard, cadastros estruturados e relatórios analíticos.
 
-## Estrutura do projeto
+A solução foi pensada para uso diário em operações logísticas, com foco em:
+
+- padronização do processo de carregamento;
+- redução de retrabalho manual;
+- rastreabilidade de dados por veículo, colaborador e operação;
+- controle operacional com visão histórica e indicadores;
+- experiência de uso semelhante a um painel interno de gestão.
+
+## Objetivo do Produto
+
+Transformar a operação de carregamento em um fluxo digital organizado, com:
+
+- autenticação segura;
+- base de dados em Supabase;
+- gestão de funcionários e veículos;
+- registro de movimentações em planilha operacional;
+- dashboard executivo com métricas;
+- relatórios e exportação de dados.
+
+## Stack Tecnológica
+
+- HTML5
+- CSS3
+- JavaScript vanilla
+- Supabase Auth
+- Supabase Postgres
+- SQL para modelagem e políticas de acesso
+- Vercel para deploy estático
+
+## Arquitetura do Sistema
+
+A aplicação segue uma arquitetura frontend estático com integração ao backend gerenciado do Supabase.
+
+- Frontend: páginas HTML, CSS e JS puro
+- Autenticação: Supabase Auth
+- Banco de dados: Supabase Postgres
+- Persistência: tabelas estruturadas para operações e cadastros
+- Deploy: Vercel
+
+## Estrutura do Projeto
 
 ```text
 /
@@ -16,92 +55,118 @@ Este sistema foi pensado para uso diário em operação logística, com foco em 
 ├── employees.html
 ├── vehicles.html
 ├── reports.html
-├── assets/
-│   ├── images/
-│   └── icons/
 ├── css/
-│   ├── variables.css
-│   ├── base.css
 │   ├── layout.css
 │   ├── components.css
+│   ├── base.css
 │   └── responsive.css
 ├── js/
 │   ├── app.js
-│   ├── config.js
 │   ├── supabase.js
 │   ├── table.js
-│   ├── dashboard.js
 │   ├── employees.js
 │   ├── vehicles.js
 │   ├── reports.js
 │   └── utils.js
-├── etiquetas/
-│   ├── index.html
-│   ├── styles.css
-│   ├── script.js
-│   ├── produtos.js
-│   └── produtos.csv
-├── expedicao/
-│   ├── index.html
-│   ├── assets/
-│   ├── css/
-│   ├── data/
-│   ├── js/
-│   └── scripts/
 ├── sql/
 │   └── setup.sql
+├── etiquetas/
+├── expedicao/
+├── assets/
+│   ├── images/
+│   └── icons/
 ├── .env.example
 ├── vercel.json
 ├── README.md
-└── assets/images/logo.png
+└── package.json
 ```
 
-## Funcionalidades principais
+## Funcionalidades Principais
 
-- Login com Supabase Auth
-- Sessão persistente e proteção de páginas internas
-- Sidebar com navegação por módulos
-- Planilha operacional com colunas de data, veículo, volumes, movimentador, carregador e organizador
-- Edição direta por célula
-- Busca, filtros e paginação
-- Validação de volumes e seleção por dropdowns
-- Cadastro de funcionários com status ativo/inativo
-- Cadastro de veículos com status ativo/inativo
-- Dashboard com indicadores do dia e do mês
-- Relatórios com total de carregamentos, volumes e média por operação
-- Exportação CSV
-- Toasts, empty states, footer institucional e visual limpo
-- Preparação para integração com Supabase e deploy na Vercel
+### 1. Autenticação e Sessão
+- login com e-mail e senha via Supabase;
+- gestão de sessão do usuário;
+- proteção de páginas internas;
+- fluxo preparado para ambiente real e produção.
 
-## 1. Criar o projeto no Supabase
+### 2. Dashboard Operacional
+- visão geral de desempenho;
+- indicadores de operações do dia e do mês;
+- resumo de produtividade e movimentação;
+- painel de acompanhamento para gestão.
+
+### 3. Planilha de Carregamento
+- registro de movimentações em formato tabular;
+- filtros por período, veículo, operador e status;
+- cadastro de dados em tempo real;
+- estrutura pronta para operações repetitivas e em grande volume.
+
+### 4. Gestão de Funcionários
+- cadastro de colaboradores;
+- controle de status ativo/inativo;
+- organização para uso operacional e administrativo.
+
+### 5. Gestão de Veículos
+- cadastro de frota;
+- controle de disponibilidade e status;
+- manutenção da integridade operacional por relacionamento com registros.
+
+### 6. Relatórios e Exportação
+- indicadores por operação;
+- consolidação de volumes e totais;
+- exportação em CSV;
+- preparação para análise e tomada de decisão.
+
+## Fluxo de Operação
+
+1. Usuário acessa a aplicação;
+2. realiza autenticação;
+3. navega pelo painel operacional;
+4. registra operações na planilha;
+5. atualiza dados de funcionários e veículos;
+6. monitora indicadores no dashboard;
+7. exporta relatórios para uso interno ou acompanhamento executivo.
+
+## Requisitos
+
+- Navegador moderno
+- Conta no Supabase
+- Acesso ao SQL Editor do Supabase
+- Serviço web ou deploy em Vercel
+
+## Configuração do Supabase
+
+### 1. Criar projeto
 
 1. Acesse https://supabase.com
 2. Crie um novo projeto
-3. Abra `Settings > API`
-4. Copie:
-   - `Project URL`
-   - `anon public key`
+3. Abra a seção Settings > API
+4. copie:
+   - Project URL
+   - anon public key
 
-Nunca exponha a `service_role key` no frontend.
+> Nunca utilize a service_role key no frontend.
 
-## 2. Executar o SQL
+### 2. Executar a estrutura de banco
 
-1. No painel do Supabase, vá em `SQL Editor`
-2. Crie uma nova query
-3. Cole o conteúdo do arquivo [sql/setup.sql](sql/setup.sql)
-4. Execute a query
+Importe o script localizado em [sql/setup.sql](sql/setup.sql) no SQL Editor do Supabase.
 
-O script cria as tabelas:
+Esse script cria e configura as principais tabelas:
 
-- `profiles`
-- `employees`
-- `vehicles`
-- `loadings`
-- `audit_logs`
+- profiles
+- employees
+- vehicles
+- loadings
+- audit_logs
 
-Além disso, cria índices, triggers, RLS e políticas de acesso.
+Também gera:
 
-## 3. Configurar as variáveis
+- índices;
+- gatilhos;
+- políticas de segurança (RLS);
+- estrutura mínima para operação funcional.
+
+### 3. Configurar variáveis de ambiente
 
 Crie um arquivo `.env` com base no [.env.example](.env.example):
 
@@ -110,91 +175,70 @@ SUPABASE_URL=https://SEU_PROJETO.supabase.co
 SUPABASE_ANON_KEY=sua-chave-publica
 ```
 
-No frontend, o projeto também pode receber valores via `window.SUPABASE_URL` e `window.SUPABASE_ANON_KEY` nos arquivos HTML, caso queira substituir temporariamente a configuração em ambiente local.
+No frontend, a aplicação também aceita valores via `window.SUPABASE_URL` e `window.SUPABASE_ANON_KEY` em ambiente local, quando necessário.
 
-## 4. Criar o primeiro usuário
+## Como Executar Localmente
 
-1. Vá em `Authentication > Users` no Supabase
-2. Clique em `Add user`
-3. Cadastre o usuário com e-mail e senha
-4. Faça login na tela de autenticação do sistema
-
-Não há cadastro público de usuários.
-
-## 5. Como rodar localmente
-
-No terminal, na pasta do projeto:
+Na raiz do projeto, execute:
 
 ```bash
 python -m http.server 8000
 ```
 
-Depois abra:
+Depois acesse:
 
 ```text
 http://localhost:8000/login.html
 ```
 
-## 6. Deploy na Vercel
+## Deploy na Vercel
 
-1. Faça login na Vercel
-2. Importe este repositório
-3. Mantenha a raiz do projeto como pasta principal
-4. Configure as variáveis de ambiente:
+1. Faça login na Vercel;
+2. importe este repositório;
+3. mantenha a raiz do projeto como pasta principal;
+4. configure as variáveis de ambiente:
    - `SUPABASE_URL`
    - `SUPABASE_ANON_KEY`
-5. Faça o deploy
+5. finalize o deploy.
 
-O arquivo [vercel.json](vercel.json) já foi preparado para uso estático básico.
+O arquivo [vercel.json](vercel.json) já foi configurado para suporte básico ao deploy estático.
 
-## 7. Trocar logo e favicon
+## Segurança e Boas Práticas
 
-Os arquivos atuais estão em:
+- chaves sensíveis nunca devem ficar expostas no frontend;
+- a autenticação deve ser feita pelo Supabase Auth;
+- regras de acesso devem ser controladas por RLS;
+- dados operacionais devem ser validados antes de persistência;
+- configurações de produção devem ser separadas do ambiente local.
 
-- `assets/images/logo.png`
-- `assets/icons/favicon.png`
+## Observações Importantes
 
-Para trocar a identidade visual do sistema, substitua os arquivos e mantenha os nomes atuais ou ajuste os caminhos em [index.html](index.html), [login.html](login.html) e [js/config.js](js/config.js).
+- O sistema foi estruturado em HTML, CSS e JavaScript puro para permitir deploy rápido e manutenção simples.
+- Funcionários e veículos inativos podem ser excluídos da lógica de seleção em novos registros;
+- o projeto está preparado para evolução incremental sem quebrar a base existente;
+- a exportação atual está direcionada para CSV, o que facilita uso no dia a dia operacional.
 
-## 8. Observações importantes
+## Módulos Complementares
 
-- Este projeto foi estruturado para funcionar em HTML, CSS e JavaScript puro.
-- Funcionários e veículos inativos deixam de aparecer em novos dropdowns da planilha.
-- Registros antigos continuam preservados corretamente por relacionamento no banco.
-- A exportação atual está pronta para CSV.
-- O sistema foi organizado para permitir evolução sem quebrar a base.
+O repositório também inclui módulos auxiliares para operação complementar, como:
 
-## 9. Módulos integrados
+- etiquetas
+- expedição
 
-Além do núcleo operacional, o projeto também inclui módulos complementares:
+Esses módulos fazem parte do mesmo ecossistema operacional e podem evoluir de forma independente.
 
-- `etiquetas/`: geração de etiquetas
-- `expedicao/`: gestão de expedição
+## Roadmap
 
-Esses módulos fazem parte do mesmo conjunto de ferramentas e podem evoluir separadamente sem atrapalhar o fluxo principal.
-
-## 10. Fluxo de uso esperado
-
-1. Login
-2. Dashboard
-3. Planilha
-4. Novo registro
-5. Editar e salvar
-6. Filtrar
-7. Cadastrar funcionários
-8. Cadastrar veículos
-9. Consultar relatórios
-10. Logout
-
-## 11. Resumo da stack
-
-- HTML
-- CSS
-- JavaScript
-- Supabase
-- Vercel
-- SQL para estrutura de banco e RLS
+- refinamento da camada de validação de dados;
+- melhoria no fluxo de edição e auditoria;
+- criação de relatórios mais avançados;
+- expansão de dashboard executivo;
+- integração de automações e alertas operacionais.
 
 ## Licença
 
-Projeto interno para uso operacional e organização de processos logísticos.
+Projeto desenvolvido para uso operacional e gestão interna de processos logísticos.
+
+## Status do Projeto
+
+Aplicação em fase de preparação para uso em produção, com frontend funcional, estrutura de banco definida e deploy preparado para Vercel.
