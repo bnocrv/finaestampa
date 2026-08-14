@@ -42,6 +42,14 @@
     {
       "source": "/reports",
       "destination": "/reports.html"
+    },
+    {
+      "source": "/expedicao",
+      "destination": "/expedicao/index.html"
+    },
+    {
+      "source": "/etiquetas",
+      "destination": "/etiquetas/index.html"
     }
   ]
 }

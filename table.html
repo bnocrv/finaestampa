@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -25,9 +25,9 @@
       <aside class="app-sidebar">
         <div class="sidebar-header"><div class="brand"><img src="assets/icons/favicon.png" alt="Fina Estampa" /></div></div>
         <nav class="sidebar-nav">
-          <a class="nav-item active" href="table.html" title="Carregamento" aria-label="Carregamento"><i data-lucide="box"></i></a>
-          <a class="nav-item" href="expedicao/index.html" title="ExpediÃ§Ã£o" aria-label="ExpediÃ§Ã£o"><i data-lucide="route"></i></a>
-          <a class="nav-item" href="etiquetas/index.html" title="Etiquetas" aria-label="Etiquetas"><i data-lucide="tags"></i></a>
+          <a class="nav-item active" href="/table" title="Carregamento" aria-label="Carregamento"><i data-lucide="box"></i></a>
+          <a class="nav-item" href="/expedicao" title="Expedição" aria-label="Expedição"><i data-lucide="route"></i></a>
+          <a class="nav-item" href="/etiquetas" title="Etiquetas" aria-label="Etiquetas"><i data-lucide="tags"></i></a>
         </nav>
         <div class="sidebar-footer">
           <button class="nav-item" id="logoutBtn" title="Sair" aria-label="Sair"><i data-lucide="log-out"></i></button>
@@ -40,7 +40,7 @@
             <div class="topbar-actions">
               <div class="search-wrap"><span class="search-icon"><i data-lucide="search"></i></span><input type="search" id="globalSearch" placeholder="Pesquisar" /></div>
               <button class="header-btn" id="addRecordBtn"><i data-lucide="plus"></i>Adicionar registro</button>
-              <div class="header-profile"><div class="avatar" style="width:32px;height:32px;">FE</div><div class="hide-mobile"><strong>OperaÃ§Ã£o</strong></div></div>
+              <div class="header-profile"><div class="avatar" style="width:32px;height:32px;">FE</div><div class="hide-mobile"><strong>Operação</strong></div></div>
             </div>
           </div>
         </header>
@@ -57,8 +57,8 @@
               </div>
               <div class="toolbar-group">
                 <span class="pill success" id="activeFiltersLabel">Sem filtros</span>
-                <button class="chip" id="manageEmployeesBtn" style="opacity:0.6;font-size:12px;" title="Gerenciar FuncionÃ¡rios"><i data-lucide="users" style="width:14px;height:14px;"></i></button>
-                <button class="chip" id="manageVehiclesBtn" style="opacity:0.6;font-size:12px;" title="Gerenciar VeÃ­culos"><i data-lucide="truck" style="width:14px;height:14px;"></i></button>
+                <button class="chip" id="manageEmployeesBtn" style="opacity:0.6;font-size:12px;" title="Gerenciar Funcionários"><i data-lucide="users" style="width:14px;height:14px;"></i></button>
+                <button class="chip" id="manageVehiclesBtn" style="opacity:0.6;font-size:12px;" title="Gerenciar Veículos"><i data-lucide="truck" style="width:14px;height:14px;"></i></button>
               </div>
             </section>
             <section class="filter-bar" id="filterBar"></section>
@@ -68,12 +68,12 @@
                   <thead>
                     <tr>
                       <th>Data</th>
-                      <th>VeÃ­culo</th>
+                      <th>Veículo</th>
                       <th>Volumes</th>
                       <th>Movimentador</th>
                       <th>Carregador</th>
                       <th>Organizador</th>
-                      <th>AÃ§Ãµes</th>
+                      <th>Ações</th>
                     </tr>
                   </thead>
                   <tbody id="tableBody"></tbody>
@@ -82,30 +82,30 @@
               <div class="table-footer">
                 <span id="tableCount">0 registros</span>
                 <div class="pagination">
-                  <button class="page-btn" id="prevPageBtn" aria-label="PÃ¡gina anterior"><i data-lucide="chevron-left"></i></button>
-                  <span id="pageInfo">PÃ¡gina 1</span>
-                  <button class="page-btn" id="nextPageBtn" aria-label="PrÃ³xima pÃ¡gina"><i data-lucide="chevron-right"></i></button>
+                  <button class="page-btn" id="prevPageBtn" aria-label="Página anterior"><i data-lucide="chevron-left"></i></button>
+                  <span id="pageInfo">Página 1</span>
+                  <button class="page-btn" id="nextPageBtn" aria-label="Próxima página"><i data-lucide="chevron-right"></i></button>
                 </div>
               </div>
             </section>
           </div>
         </div>
-      <footer class="app-footer"><p>Trabalhando juntos, entregando resultados.</p><span>FINA ESTAMPA v1.0 â€¢ 2026</span></footer></main>
+      <footer class="app-footer"><p>Trabalhando juntos, entregando resultados.</p><span>FINA ESTAMPA v1.0 • 2026</span></footer></main>
     </div>
     <div class="toast-stack"></div>
     
-    <!-- Modal FuncionÃ¡rios -->
+    <!-- Modal Funcionários -->
     <div class="modal" id="employeesModal" style="display:none;">
       <div class="modal-content" style="max-width:500px;">
         <div class="modal-header">
-          <h2>Gerenciar FuncionÃ¡rios</h2>
+          <h2>Gerenciar Funcionários</h2>
           <button class="modal-close" id="closeEmployeesModal" type="button" aria-label="Fechar"><i data-lucide="x"></i></button>
         </div>
         <div class="modal-body">
           <form id="employeeForm" class="form-grid">
             <div class="form-field">
               <label for="employeeName">Nome</label>
-              <input id="employeeName" class="input" type="text" placeholder="Nome do funcionÃ¡rio" required />
+              <input id="employeeName" class="input" type="text" placeholder="Nome do funcionário" required />
             </div>
             <div class="form-field">
               <label for="employeeStatus">Status</label>
@@ -121,11 +121,11 @@
       </div>
     </div>
     
-    <!-- Modal VeÃ­culos -->
+    <!-- Modal Veículos -->
     <div class="modal" id="vehiclesModal" style="display:none;">
       <div class="modal-content" style="max-width:500px;">
         <div class="modal-header">
-          <h2>Gerenciar VeÃ­culos</h2>
+          <h2>Gerenciar Veículos</h2>
           <button class="modal-close" id="closeVehiclesModal" type="button" aria-label="Fechar"><i data-lucide="x"></i></button>
         </div>
         <div class="modal-body">
