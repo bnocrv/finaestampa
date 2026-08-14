@@ -628,6 +628,7 @@ function gerarEtiqueta() {
     finalizado = true;
     if (verificarJanela) {
       clearInterval(verificarJanela);
+      verificarJanela = null;
     }
     imprimindo = false;
     botaoGerar.disabled = false;
@@ -646,16 +647,31 @@ function gerarEtiqueta() {
   verificarJanela = setInterval(() => {
     if (printWindow.closed) {
       clearInterval(verificarJanela);
+      verificarJanela = null;
       finalizarImpressao();
     }
   }, 500);
+
+  // Segurança: forçar limpeza após 30 segundos se impressão não finalizar
+  const timeoutLimpeza = setTimeout(() => {
+    if (verificarJanela) {
+      clearInterval(verificarJanela);
+      verificarJanela = null;
+    }
+    finalizarImpressao();
+  }, 30000);
 
   setTimeout(() => {
     try {
       printWindow.focus();
       printWindow.print();
+      clearTimeout(timeoutLimpeza);
     } catch (error) {
-      clearInterval(verificarJanela);
+      clearTimeout(timeoutLimpeza);
+      if (verificarJanela) {
+        clearInterval(verificarJanela);
+        verificarJanela = null;
+      }
       imprimindo = false;
       botaoGerar.disabled = false;
       botaoGerar.innerText = "Gerar Etiqueta(s)";

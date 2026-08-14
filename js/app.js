@@ -26,8 +26,33 @@ window.addEventListener('DOMContentLoaded', async () => {
     }, 300);
   });
 
+  // Detectar página atual
   const isLoginPage = window.location.pathname.includes('login.html');
+  const isRedirectPage = document.body.dataset.page === 'redirect';
 
+  // Se for página de redirect (index.html), redirecionar com base em autenticação
+  if (isRedirectPage) {
+    const configured = await isSupabaseConfigured();
+    if (!configured) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (session && !error) {
+        window.location.href = 'table.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    } catch (error) {
+      console.warn('Session check error:', error.message);
+      window.location.href = 'login.html';
+    }
+    return; // Não continuar se for página de redirect
+  }
+
+  // Para outras páginas (excluindo login)
   if (!isLoginPage) {
     const configured = await isSupabaseConfigured();
     if (!configured) {
@@ -45,12 +70,13 @@ window.addEventListener('DOMContentLoaded', async () => {
       window.location.href = 'login.html';
     }
   } else {
+    // Se estiver na página de login E houver uma sessão válida, redirecionar para principal
     const configured = await isSupabaseConfigured();
     if (configured) {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          window.location.href = 'index.html';
+          window.location.href = 'table.html';
         }
       } catch (error) {
         console.warn('Session check on login page:', error.message);

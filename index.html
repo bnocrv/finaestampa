@@ -7,12 +7,25 @@
     <meta name="description" content="Sistema de controle operacional de carregamento de veículos." />
     <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
     <link rel="apple-touch-icon" href="assets/icons/favicon.png" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-      window.location.href = 'table.html';
+      window.SUPABASE_URL = "https://ebtawenbhgpbdfjhvbxv.supabase.co";
+      window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVidGF3ZW5iaGdwYmRmamh2Ynh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTQ3NjAsImV4cCI6MjEwMjI5MDc2MH0.NaNBdSj4zwyW9koy8HBF5w0Yu20wW60EjCGFQ4xWeas";
     </script>
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/app.js"></script>
   </head>
-  <body>
-    <p>Redirecionando...</p>
+  <body data-page="redirect">
+    <div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#181818;">
+      <div style="text-align:center;color:white;">
+        <p>Carregando...</p>
+      </div>
+    </div>
   </body>
 </html>
 
