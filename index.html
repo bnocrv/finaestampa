@@ -3,83 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Visão Geral | Carregamento Operacional</title>
+    <title>Carregamento Operacional</title>
     <meta name="description" content="Sistema de controle operacional de carregamento de veículos." />
     <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
     <link rel="apple-touch-icon" href="assets/icons/favicon.png" />
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/responsive.css" />
-    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-      window.SUPABASE_URL = "https://ebtawenbhgpbdfjhvbxv.supabase.co";
-      window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVidGF3ZW5iaGdwYmRmamh2Ynh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTQ3NjAsImV4cCI6MjEwMjI5MDc2MH0.NaNBdSj4zwyW9koy8HBF5w0Yu20wW60EjCGFQ4xWeas";
+      window.location.href = 'table.html';
     </script>
-    <script type="module" src="js/config.js"></script>
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/dashboard.js"></script>
   </head>
-  <body data-app-name="Visão Geral" data-page="dashboard">
-    <div class="app-shell">
-      <aside class="app-sidebar">
-        <div class="sidebar-header">
-          <div class="brand"><img src="assets/icons/favicon.png" alt="Fina Estampa" /></div>
-          
-        </div>
-        <nav class="sidebar-nav">
-          <div class="nav-group" data-nav-group="carregamento">
-            <button class="nav-item nav-group-toggle" type="button" data-nav-group-toggle title="Recolher Carregamento" aria-label="Recolher Carregamento" aria-expanded="true"><i class="nav-group-chevron" data-lucide="chevron-right" aria-hidden="true"></i></button>
-            <div class="nav-group-items">
-              <a class="nav-item active" href="index.html" title="Visão Geral" aria-label="Visão Geral"><i data-lucide="layout-grid"></i><span>Visão Geral</span></a>
-              <a class="nav-item" href="table.html" title="Planilha" aria-label="Planilha"><i data-lucide="table"></i><span>Planilha</span></a>
-              <a class="nav-item" href="employees.html" title="Funcionários" aria-label="Funcionários"><i data-lucide="users"></i><span>Funcionários</span></a>
-              <a class="nav-item" href="vehicles.html" title="Veículos" aria-label="Veículos"><i data-lucide="truck"></i><span>Veículos</span></a>
-              <a class="nav-item" href="reports.html" title="Relatórios" aria-label="Relatórios"><i data-lucide="bar-chart-3"></i><span>Relatórios</span></a>
-            </div>
-          </div>
-          <a class="nav-item nav-item-external" href="expedicao/index.html" title="Expedição" aria-label="Expedição"><i data-lucide="route"></i><span>Expedição</span></a>
-          <a class="nav-item nav-item-external" href="etiquetas/index.html" title="Etiquetas" aria-label="Etiquetas"><i data-lucide="tags"></i><span>Etiquetas</span></a>
-          
-        </nav>
-        <div class="sidebar-footer">
-          
-          
-          <button class="nav-item" id="logoutBtn" title="Sair" aria-label="Sair"><i data-lucide="log-out"></i><span>Sair</span></button>
-        </div>
-      </aside>
-      <main class="app-main">
-        <header class="topbar">
-          <div class="topbar-inner">
-            <div class="page-title">Visão Geral</div>
-            <div class="topbar-actions">
-              <div class="search-wrap"><span class="search-icon"><i data-lucide="search"></i></span><input type="search" placeholder="Pesquisar" /></div>
-              <a class="header-btn" href="table.html"><i data-lucide="plus"></i>Adicionar registro</a>
-              <div class="header-profile"><div class="avatar" style="width:32px;height:32px;">FE</div><div class="hide-mobile"><strong>Operação</strong></div></div>
-            </div>
-          </div>
-        </header>
-        <div class="page-content">
-          <div class="page-shell">
-            <section class="stats-grid">
-              <article class="stat-card"><div class="label"><span>Carregamentos hoje</span><i data-lucide="truck"></i></div><div class="value" id="loadsToday">0</div></article>
-              <article class="stat-card"><div class="label"><span>Volumes hoje</span><i data-lucide="package"></i></div><div class="value" id="volumesToday">0</div></article>
-              <article class="stat-card"><div class="label"><span>Carregamentos mês</span><i data-lucide="calendar-days"></i></div><div class="value" id="loadsMonth">0</div></article>
-              <article class="stat-card"><div class="label"><span>Volumes mês</span><i data-lucide="archive"></i></div><div class="value" id="volumesMonth">0</div></article>
-              <article class="stat-card"><div class="label"><span>Maior participação</span><i data-lucide="award"></i></div><div class="value" id="topEmployee">-</div></article>
-            </section>
-            <section class="grid-2">
-              <article class="chart-card"><div class="chart-header"><h3>Volumes por dia</h3><span class="pill success">últimos 7 dias</span></div><div class="chart-placeholder"><div class="chart-bars" id="dailyVolumesChart"></div></div></article>
-              <article class="chart-card"><div class="chart-header"><h3>Carregamentos por veículo</h3><span class="pill warning">top 7</span></div><div class="chart-placeholder"><div class="chart-bars" id="vehicleLoadsChart"></div></div></article>
-            </section>
-            <section class="chart-card"><div class="chart-header"><h3>Participação por funcionário</h3><span class="pill success">período atual</span></div><div id="employeeParticipationList"></div></section>
-          </div>
-        </div>
-      <footer class="app-footer"><p>Trabalhando juntos, entregando resultados.</p><span>FINA ESTAMPA v1.0 • 2026</span></footer></main>
-    </div>
-    <div class="toast-stack"></div>
-    <script>lucide.createIcons();</script>
+  <body>
+    <p>Redirecionando...</p>
   </body>
 </html>
 

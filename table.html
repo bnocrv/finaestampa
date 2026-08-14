@@ -25,24 +25,12 @@
       <aside class="app-sidebar">
         <div class="sidebar-header"><div class="brand"><img src="assets/icons/favicon.png" alt="Fina Estampa" /></div></div>
         <nav class="sidebar-nav">
-          <div class="nav-group" data-nav-group="carregamento">
-            <button class="nav-item nav-group-toggle" type="button" data-nav-group-toggle title="Recolher Carregamento" aria-label="Recolher Carregamento" aria-expanded="true"><i class="nav-group-chevron" data-lucide="chevron-right" aria-hidden="true"></i></button>
-            <div class="nav-group-items">
-              <a class="nav-item" href="index.html" title="Visão Geral" aria-label="Visão Geral"><i data-lucide="layout-grid"></i><span>Visão Geral</span></a>
-              <a class="nav-item active" href="table.html" title="Planilha" aria-label="Planilha"><i data-lucide="table"></i><span>Planilha</span></a>
-              <a class="nav-item" href="employees.html" title="Funcionários" aria-label="Funcionários"><i data-lucide="users"></i><span>Funcionários</span></a>
-              <a class="nav-item" href="vehicles.html" title="Veículos" aria-label="Veículos"><i data-lucide="truck"></i><span>Veículos</span></a>
-              <a class="nav-item" href="reports.html" title="Relatórios" aria-label="Relatórios"><i data-lucide="bar-chart-3"></i><span>Relatórios</span></a>
-            </div>
-          </div>
-          <a class="nav-item nav-item-external" href="expedicao/index.html" title="Expedição" aria-label="Expedição"><i data-lucide="route"></i><span>Expedição</span></a>
-          <a class="nav-item nav-item-external" href="etiquetas/index.html" title="Etiquetas" aria-label="Etiquetas"><i data-lucide="tags"></i><span>Etiquetas</span></a>
-          
+          <a class="nav-item active" href="table.html" title="Carregamento" aria-label="Carregamento"><i data-lucide="box"></i></a>
+          <a class="nav-item" href="expedicao/index.html" title="Expedição" aria-label="Expedição"><i data-lucide="route"></i></a>
+          <a class="nav-item" href="etiquetas/index.html" title="Etiquetas" aria-label="Etiquetas"><i data-lucide="tags"></i></a>
         </nav>
         <div class="sidebar-footer">
-          
-          
-          <button class="nav-item" id="logoutBtn" title="Sair" aria-label="Sair"><i data-lucide="log-out"></i><span>Sair</span></button>
+          <button class="nav-item" id="logoutBtn" title="Sair" aria-label="Sair"><i data-lucide="log-out"></i></button>
         </div>
       </aside>
       <main class="app-main">
@@ -67,7 +55,11 @@
                 <button class="chip" id="refreshBtn"><i data-lucide="rotate-cw"></i>Atualizar</button>
                 <button class="chip" id="exportCsvBtn"><i data-lucide="download"></i>Exportar CSV</button>
               </div>
-              <div class="toolbar-group"><span class="pill success" id="activeFiltersLabel">Sem filtros</span></div>
+              <div class="toolbar-group">
+                <span class="pill success" id="activeFiltersLabel">Sem filtros</span>
+                <button class="chip" id="manageEmployeesBtn" style="opacity:0.6;font-size:12px;" title="Gerenciar Funcionários"><i data-lucide="users" style="width:14px;height:14px;"></i></button>
+                <button class="chip" id="manageVehiclesBtn" style="opacity:0.6;font-size:12px;" title="Gerenciar Veículos"><i data-lucide="truck" style="width:14px;height:14px;"></i></button>
+              </div>
             </section>
             <section class="filter-bar" id="filterBar"></section>
             <section class="table-card">
@@ -101,6 +93,61 @@
       <footer class="app-footer"><p>Trabalhando juntos, entregando resultados.</p><span>FINA ESTAMPA v1.0 • 2026</span></footer></main>
     </div>
     <div class="toast-stack"></div>
+    
+    <!-- Modal Funcionários -->
+    <div class="modal" id="employeesModal" style="display:none;">
+      <div class="modal-content" style="max-width:500px;">
+        <div class="modal-header">
+          <h2>Gerenciar Funcionários</h2>
+          <button class="modal-close" id="closeEmployeesModal" type="button" aria-label="Fechar"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+          <form id="employeeForm" class="form-grid">
+            <div class="form-field">
+              <label for="employeeName">Nome</label>
+              <input id="employeeName" class="input" type="text" placeholder="Nome do funcionário" required />
+            </div>
+            <div class="form-field">
+              <label for="employeeStatus">Status</label>
+              <select id="employeeStatus" class="input">
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+              </select>
+            </div>
+            <button class="btn primary" type="submit">Salvar</button>
+          </form>
+          <div id="employeesList" style="margin-top:16px;"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal Veículos -->
+    <div class="modal" id="vehiclesModal" style="display:none;">
+      <div class="modal-content" style="max-width:500px;">
+        <div class="modal-header">
+          <h2>Gerenciar Veículos</h2>
+          <button class="modal-close" id="closeVehiclesModal" type="button" aria-label="Fechar"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+          <form id="vehicleForm" class="form-grid">
+            <div class="form-field">
+              <label for="vehiclePlate">Placa</label>
+              <input id="vehiclePlate" class="input" type="text" placeholder="ABC-1234" required />
+            </div>
+            <div class="form-field">
+              <label for="vehicleStatus">Status</label>
+              <select id="vehicleStatus" class="input">
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+              </select>
+            </div>
+            <button class="btn primary" type="submit">Salvar</button>
+          </form>
+          <div id="vehiclesList" style="margin-top:16px;"></div>
+        </div>
+      </div>
+    </div>
+    
     <script>lucide.createIcons();</script>
   </body>
 </html>

@@ -115,6 +115,18 @@ img {
   border-radius: 18px;
   box-shadow: var(--shadow);
   overflow: hidden;
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  z-index: 1501;
+}
+
+.modal[style*="display: flex"] {
+  display: flex;
 }
 
 .modal-header,
@@ -128,10 +140,29 @@ img {
 
 .modal-body {
   padding: 20px;
+  overflow-y: auto;
+  flex: 1;
 }
 
-.modal-header h3 {
+.modal-header h2 {
   margin: 0;
+  font-size: 1.1rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.6);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition);
+}
+
+.modal-close:hover {
+  color: white;
 }
 
 .modal-footer {

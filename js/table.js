@@ -379,6 +379,120 @@ async function initialize() {
     }
   });
 
+  // Modal de Funcionários
+  const manageEmployeesBtn = document.querySelector('#manageEmployeesBtn');
+  const employeesModal = document.querySelector('#employeesModal');
+  const closeEmployeesModal = document.querySelector('#closeEmployeesModal');
+  const employeeForm = document.querySelector('#employeeForm');
+
+  if (manageEmployeesBtn && employeesModal) {
+    manageEmployeesBtn.addEventListener('click', async () => {
+      employeesModal.style.display = 'flex';
+      await renderEmployeesList();
+    });
+
+    closeEmployeesModal?.addEventListener('click', () => {
+      employeesModal.style.display = 'none';
+    });
+
+    employeeForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.querySelector('#employeeName').value.trim();
+      const status = document.querySelector('#employeeStatus').value;
+
+      if (!name) {
+        showToast('Nome é obrigatório.', 'error');
+        return;
+      }
+
+      const { error } = await supabase.from('employees').insert([{ name, status }]);
+      if (error) {
+        showToast(error.message || 'Erro ao adicionar funcionário.', 'error');
+        return;
+      }
+
+      showToast('Funcionário adicionado.', 'success');
+      employeeForm.reset();
+      await fetchEmployees();
+      await renderEmployeesList();
+      await fetchLoadings();
+    });
+  }
+
+  // Modal de Veículos
+  const manageVehiclesBtn = document.querySelector('#manageVehiclesBtn');
+  const vehiclesModal = document.querySelector('#vehiclesModal');
+  const closeVehiclesModal = document.querySelector('#closeVehiclesModal');
+  const vehicleForm = document.querySelector('#vehicleForm');
+
+  if (manageVehiclesBtn && vehiclesModal) {
+    manageVehiclesBtn.addEventListener('click', async () => {
+      vehiclesModal.style.display = 'flex';
+      await renderVehiclesList();
+    });
+
+    closeVehiclesModal?.addEventListener('click', () => {
+      vehiclesModal.style.display = 'none';
+    });
+
+    vehicleForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const identification = document.querySelector('#vehiclePlate').value.trim();
+      const status = document.querySelector('#vehicleStatus').value;
+
+      if (!identification) {
+        showToast('Placa é obrigatória.', 'error');
+        return;
+      }
+
+      const { error } = await supabase.from('vehicles').insert([{ identification, status }]);
+      if (error) {
+        showToast(error.message || 'Erro ao adicionar veículo.', 'error');
+        return;
+      }
+
+      showToast('Veículo adicionado.', 'success');
+      vehicleForm.reset();
+      await fetchVehicles();
+      await renderVehiclesList();
+      await fetchLoadings();
+    });
+  }
+
+  async function renderEmployeesList() {
+    const list = document.querySelector('#employeesList');
+    const active = employees.filter(e => e.status === 'Ativo').slice(0, 5);
+    
+    if (!active.length) {
+      list.innerHTML = '<p style="opacity:0.6;font-size:0.9rem;">Nenhum funcionário ativo.</p>';
+      return;
+    }
+
+    list.innerHTML = `
+      <div style="font-size:0.85rem;opacity:0.7;margin-bottom:8px;">Funcionários ativos:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        ${active.map(e => `<span style="background:rgba(255,0,0,0.1);padding:4px 8px;border-radius:6px;font-size:0.85rem;">${escapeHtml(e.name)}</span>`).join('')}
+      </div>
+    `;
+  }
+
+  async function renderVehiclesList() {
+    const list = document.querySelector('#vehiclesList');
+    const active = vehicles.filter(v => v.status === 'Ativo').slice(0, 5);
+    
+    if (!active.length) {
+      list.innerHTML = '<p style="opacity:0.6;font-size:0.9rem;">Nenhum veículo ativo.</p>';
+      return;
+    }
+
+    list.innerHTML = `
+      <div style="font-size:0.85rem;opacity:0.7;margin-bottom:8px;">Veículos ativos:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        ${active.map(v => `<span style="background:rgba(255,0,0,0.1);padding:4px 8px;border-radius:6px;font-size:0.85rem;">${escapeHtml(v.identification)}</span>`).join('')}
+      </div>
+    `;
+  }
+
   window.addEventListener('beforeunload', () => {
     realtimeChannel?.unsubscribe?.();
   });

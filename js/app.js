@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     group.classList.toggle('is-collapsed', collapsed);
     toggle?.setAttribute('aria-expanded', String(!collapsed));
     if (toggle) {
-      toggle.title = collapsed ? 'Expandir Carregamento' : 'Recolher Carregamento';
+      toggle.title = collapsed ? 'Expandir' : 'Recolher';
       toggle.setAttribute('aria-label', toggle.title);
     }
 
@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       const isCollapsed = group.classList.toggle('is-collapsed');
       localStorage.setItem(key, isCollapsed ? 'collapsed' : 'expanded');
       toggle.setAttribute('aria-expanded', String(!isCollapsed));
-      toggle.title = isCollapsed ? 'Expandir Carregamento' : 'Recolher Carregamento';
+      toggle.title = isCollapsed ? 'Expandir' : 'Recolher';
       toggle.setAttribute('aria-label', toggle.title);
     });
   });
@@ -43,26 +43,40 @@ window.addEventListener('DOMContentLoaded', async () => {
       showToast(error.message || 'Erro ao sair.', 'error');
       return;
     }
-    window.location.href = 'login.html';
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 300);
   });
 
-  const configured = await isSupabaseConfigured();
-  if (!configured) {
-    showToast('Configure as variáveis do Supabase para conectar ao sistema.', 'info');
-  }
+  const isLoginPage = window.location.pathname.includes('login.html');
 
-  try {
-    const session = await supabase.auth.getSession();
-    const isLoginPage = window.location.pathname.includes('login.html');
+  if (!isLoginPage) {
+    const configured = await isSupabaseConfigured();
+    if (!configured) {
+      window.location.href = 'login.html';
+      return;
+    }
 
-    if (!session?.data?.session && !isLoginPage) {
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error || !session) {
+        window.location.href = 'login.html';
+      }
+    } catch (error) {
+      console.warn('Session check error:', error.message);
       window.location.href = 'login.html';
     }
-
-    if (isLoginPage && session?.data?.session) {
-      window.location.href = 'index.html';
+  } else {
+    const configured = await isSupabaseConfigured();
+    if (configured) {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          window.location.href = 'index.html';
+        }
+      } catch (error) {
+        console.warn('Session check on login page:', error.message);
+      }
     }
-  } catch (error) {
-    console.warn('Session check skipped:', error.message);
   }
 });
