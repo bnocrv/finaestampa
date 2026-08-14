@@ -7,7 +7,8 @@ async function checkAuthAndRedirect() {
   if (redirectionInProgress) return;
   redirectionInProgress = true;
 
-  const isLoginPage = window.location.pathname.includes('login.html');
+  const currentPage = window.location.pathname.split('/').pop().replace(/\.html$/, '') || 'index';
+  const isLoginPage = currentPage === 'login';
   const isRedirectPage = document.body.dataset.page === 'redirect';
 
   // Página de redirect (index.html)

@@ -22,8 +22,24 @@
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/$1"
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/table",
+      "destination": "/table.html"
+    },
+    {
+      "source": "/employees",
+      "destination": "/employees.html"
+    },
+    {
+      "source": "/vehicles",
+      "destination": "/vehicles.html"
+    },
+    {
+      "source": "/reports",
+      "destination": "/reports.html"
     }
   ]
 }

@@ -54,11 +54,11 @@ async function fetchLoadings() {
 }
 
 function activeEmployees() {
-  return employees.filter(employee => employee.status === 'Ativo');
+  return employees.filter(employee => String(employee.status).toLowerCase() === 'ativo');
 }
 
 function activeVehicles() {
-  return vehicles.filter(vehicle => vehicle.status === 'Ativo');
+  return vehicles.filter(vehicle => String(vehicle.status).toLowerCase() === 'ativo');
 }
 
 function getDisplayName(employee) {
@@ -461,7 +461,7 @@ async function initialize() {
 
   async function renderEmployeesList() {
     const list = document.querySelector('#employeesList');
-    const active = employees.filter(e => e.status === 'Ativo').slice(0, 5);
+    const active = employees.filter(e => String(e.status).toLowerCase() === 'ativo').slice(0, 5);
     
     if (!active.length) {
       list.innerHTML = '<p style="opacity:0.6;font-size:0.9rem;">Nenhum funcionário ativo.</p>';
@@ -478,7 +478,7 @@ async function initialize() {
 
   async function renderVehiclesList() {
     const list = document.querySelector('#vehiclesList');
-    const active = vehicles.filter(v => v.status === 'Ativo').slice(0, 5);
+    const active = vehicles.filter(v => String(v.status).toLowerCase() === 'ativo').slice(0, 5);
     
     if (!active.length) {
       list.innerHTML = '<p style="opacity:0.6;font-size:0.9rem;">Nenhum veículo ativo.</p>';
