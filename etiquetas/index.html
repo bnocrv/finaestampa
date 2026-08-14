@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!--
+  Sistema Etiqueta
+  Atualização final: 2026-08-06
+  Autor: Bruno dos S. Carvalho
+  Versão: v1.1
+  Ajustes: bordas simétricas, persistência de login e refinamento visual.
+-->
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gerador de Etiquetas</title>
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png" />
+    <link rel="apple-touch-icon" href="../assets/icons/favicon.png" />
+    <link rel="stylesheet" href="styles.css?v=9" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f5f5f5;
+      }
+
+      /* ===== LOGIN ===== */
+      .login {
+        max-width: 320px;
+        margin: 50px auto;
+        background: white;
+        padding: 25px 20px 40px 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .login input {
+        width: 90%;
+        padding: 10px;
+        margin: 8px 0;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .login button {
+        margin-top: 12px;
+        padding: 10px 25px;
+        font-size: 16px;
+        border: none;
+        background-color: #c0392b;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .login button:hover {
+        background-color: #993024;
+      }
+
+      #loginMsg {
+        margin-top: 12px;
+        color: red;
+        font-weight: bold;
+      }
+
+      .criador-texto {
+        margin-top: 18px;
+        font-size: 13px;
+        color: #000000;
+        text-align: center;
+        font-style: italic;
+        user-select: none;
+      }
+
+      /* ===== FORMULÁRIO ===== */
+      .formulario {
+        display: none;
+        max-width: 500px;
+        margin: 20px auto;
+        background: white;
+        padding: 25px 25px 30px 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        font-size: 16px;
+      }
+
+      .formulario label {
+        display: block;
+        margin-top: 12px;
+        font-weight: 600;
+        color: #444;
+      }
+
+      .formulario input[type="text"],
+      .formulario input[type="number"] {
+        width: 100%;
+        padding: 9px 12px;
+        margin-top: 5px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      .formulario button {
+        margin-top: 20px;
+        padding: 12px 30px;
+        font-size: 17px;
+        background-color: #c0392b;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: background-color 0.25s ease;
+      }
+      .formulario button:hover {
+        background-color: #993024;
+      }
+
+      #volumesContainer {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .volume {
+        flex: 1 1 45%;
+        min-width: 140px;
+      }
+      .volume label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 6px;
+      }
+      .volume input {
+        width: 100%;
+        padding: 8px 10px;
+        font-size: 15px;
+        border-radius: 4px;
+        border: 1px solid #bbb;
+      }
+
+      /* ===== ETIQUETA MODELO ===== */
+      #etiquetaModelo {
+        display: none;
+        width: 100mm;
+        height: 150mm;
+        padding: 12px 16px;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        color: #222;
+      }
+
+      /* Logo topo */
+      .topo-logo {
+        margin-bottom: 10px;
+        text-align: left;
+      }
+      .topo-logo img {
+        height: 40px;
+        width: auto;
+        display: inline-block;
+      }
+
+      .origem {
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .destino {
+        font-size: 24px;
+        margin-bottom: 8px;
+        font-weight: normal;
+      }
+      .destino strong {
+        font-weight: 900;
+      }
+
+      .codigo {
+        font-size: 28px;
+        margin-bottom: 10px;
+        font-weight: normal;
+      }
+      .codigo strong {
+        font-weight: 900;
+        font-size: 34px;
+        letter-spacing: 1.1px;
+      }
+
+      .descricao,
+      .fornecedor,
+      .total {
+        font-size: 18px;
+        margin-bottom: 6px;
+      }
+      .total strong {
+        font-weight: 900;
+      }
+
+      .volumes {
+        font-size: 16px;
+        margin-top: 16px;
+      }
+      .volumes span.info {
+        font-weight: normal;
+        margin-right: 8px;
+      }
+      .volumes span.quantidade {
+        font-weight: 900;
+        font-size: 22px;
+      }
+
+      #qrcode {
+        margin: 18px 0 8px 0;
+        width: 140px;
+        height: 140px;
+      }
+
+      .rodape {
+        font-size: 11px;
+        color: #c0392b;
+        border-top: 1px solid #ddd;
+        padding-top: 8px;
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        font-style: italic;
+        user-select: none;
+      }
+
+      .botao-sair {
+        display: none;
+        padding: 8px 14px;
+        border: none;
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .botao-sair:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .botao-sair-ativo {
+        display: inline-flex;
+      }
+
+      .rodape-sistema {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100vw;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 18px;
+        background: transparent;
+        border-top: 1px solid #dedee1;
+        color: #707076;
+        font-size: 12px;
+        font-weight: 500;
+        text-align: center;
+        z-index: 1000;
+      }
+
+      .rodape-sistema::before {
+        display: none;
+      }
+
+      .rodape-sistema strong {
+        color: #0b0b0c;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .rodape-sistema small {
+        color: #707076;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+      }
+
+      .rodape-sistema .rodape-info {
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="module-rail" aria-label="Navegação principal">
+      <div class="module-rail-brand"><img src="../assets/icons/favicon.png" alt="Fina Estampa" /></div>
+      <nav>
+        <a href="../index.html" title="Visão Geral" aria-label="Visão Geral"><i data-lucide="layout-grid"></i></a>
+        <a href="../table.html" title="Planilha" aria-label="Planilha"><i data-lucide="table"></i></a>
+        <a href="../employees.html" title="Funcionários" aria-label="Funcionários"><i data-lucide="users"></i></a>
+        <a href="../vehicles.html" title="Veículos" aria-label="Veículos"><i data-lucide="truck"></i></a>
+        <a href="../reports.html" title="Relatórios" aria-label="Relatórios"><i data-lucide="bar-chart-3"></i></a>
+        <a class="module-external" href="../expedicao/index.html" title="Expedição" aria-label="Expedição"><i data-lucide="route"></i></a>
+        <a class="active module-external" href="index.html" title="Etiquetas" aria-label="Etiquetas"><i data-lucide="tags"></i></a>
+      </nav>
+    </aside>
+    <header
+      class="topo-etiqueta"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: #fff;
+        border-bottom: 1px solid rgba(17, 17, 17, 0.09);
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Centraliza horizontalmente */
+        gap: 12px;
+        padding: 0 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+      "
+    >
+      <img
+        src="../assets/icons/favicon.png"
+        alt="Logo Empresa"
+        style="height: 40px; width: auto"
+      />
+      <h1
+        style="font-family: 'Orbitron', sans-serif; font-size: 20px; margin: 0"
+      >
+        Sistema Etiqueta
+      </h1>
+    </header>
+
+    <!-- FORMULÁRIO DE ETIQUETA -->
+    <div class="formulario">
+      <div class="campo campo-ativo" data-field="funcionario">
+        <label for="funcionario">Funcionário:</label>
+        <input
+          type="text"
+          id="funcionario"
+          list="usuariosSalvosList"
+          placeholder="Digite seu nome para sair na etiqueta"
+          autocomplete="name"
+        />
+        <datalist id="usuariosSalvosList"></datalist>
+        <div id="loginMsg"></div>
+      </div>
+
+      <div class="campo campo-ativo" data-field="origem">
+        <label for="origem">Origem:</label>
+        <div class="select-wrap">
+          <select id="origem">
+            <option value="Estoque Central">Estoque Central</option>
+            <option value="Guarulhos">Guarulhos</option>
+            <option value="Cabo Frio">Cabo Frio</option>
+            <option value="São José">São José</option>
+            <option value="Santo Amaro">Santo Amaro</option>
+            <option value="São Vicente">São Vicente</option>
+            <option value="Jacareí">Jacareí</option>
+            <option value="Rocinha">Rocinha</option>
+            <option value="Tijuca">Tijuca</option>
+            <option value="Osasco">Osasco</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="campo campo-ativo" data-field="destino">
+        <label for="destino">Destino:</label>
+        <div class="select-wrap">
+          <select id="destino">
+            <option value="">Selecione o destino</option>
+            <option value="Estoque Central">Estoque Central</option>
+            <option value="Guarulhos">Guarulhos</option>
+            <option value="Cabo Frio">Cabo Frio</option>
+            <option value="São José">São José</option>
+            <option value="Santo Amaro">Santo Amaro</option>
+            <option value="São Vicente">São Vicente</option>
+            <option value="Jacareí">Jacareí</option>
+            <option value="Rocinha">Rocinha</option>
+            <option value="Tijuca">Tijuca</option>
+            <option value="Osasco">Osasco</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="campo" data-field="codigo">
+        <label for="codigo">Código:</label>
+        <input type="text" id="codigo" />
+      </div>
+
+      <div class="campo" data-field="descricao">
+        <label for="descricao">Descrição:</label>
+        <input type="text" id="descricao" disabled />
+      </div>
+
+      <div class="campo" data-field="fornecedor">
+        <label for="fornecedor">Fornecedor:</label>
+        <input type="text" id="fornecedor" disabled />
+      </div>
+
+      <div class="campo" data-field="quantTotal">
+        <label for="quantTotal">Total:</label>
+        <input type="number" id="quantTotal" min="1" />
+      </div>
+
+      <div id="volumesContainer"></div>
+
+      <button class="acao-gerar" onclick="gerarEtiqueta()">Gerar Etiqueta(s)</button>
+    </div>
+
+    <footer class="rodape-sistema">
+      <span>Trabalhando juntos, sempre chegaremos mais longe.</span>
+      <div class="rodape-info">
+        <strong>FINA ESTAMPA</strong>
+        <small>v1.1 • 2026</small>
+      </div>
+    </footer>
+
+    <!-- MODELO DE ETIQUETA (escondido) -->
+    <div id="etiquetaModelo">
+      <div class="topo-logo">
+        <img
+          src="https://res.cloudinary.com/dmpqzayaa/image/upload/v1756312909/sqt5fplglswwk8isu9co.jpg"
+          alt="Logo Empresa"
+        />
+      </div>
+
+      <div class="origem">Origem: <span class="etqOrigem"></span></div>
+
+      <div class="destino">
+        Destino: <strong><span class="etqDestino"></span></strong>
+      </div>
+
+      <div class="codigo">
+        Código: <strong><span class="etqCodigo"></span></strong>
+      </div>
+
+      <div class="descricao">Descrição: <span class="etqDescricao"></span></div>
+
+      <div class="fornecedor">
+        Fornecedor: <span class="etqFornecedor"></span>
+      </div>
+
+      <div class="total">
+        Total: <strong><span class="etqTotal"></span></strong>
+      </div>
+
+      <div class="volumes">
+        Volumes: <span class="etqVolumeInfo"></span>
+        <strong><span class="etqVolumeQtd"></span></strong>
+      </div>
+
+      <div id="qrcode"></div>
+
+      <div class="rodape">
+        <div>Etiqueta gerada por: <span class="etqUser"></span></div>
+        <div>Data: <span class="etqData"></span></div>
+      </div>
+    </div>
+
+    <!-- Link QRCode lib (para geração do QRCode) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script src="produtos.js?v=2"></script>
+    <script src="script.js?v=13"></script>
+    <script>lucide.createIcons();</script>
+  </body>
+</html>

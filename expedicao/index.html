@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Painel de expedição da Fina Estampa.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/icons/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Painel de Expedição | Fina Estampa</title>
+</head>
+<body>
+  <aside class="module-rail" aria-label="Navegação principal">
+    <div class="module-rail-brand"><img src="../assets/icons/favicon.png" alt="Fina Estampa" /></div>
+    <nav>
+      <a href="../index.html" title="Visão Geral" aria-label="Visão Geral"><i data-lucide="layout-grid"></i></a>
+      <a href="../table.html" title="Planilha" aria-label="Planilha"><i data-lucide="table"></i></a>
+      <a href="../employees.html" title="Funcionários" aria-label="Funcionários"><i data-lucide="users"></i></a>
+      <a href="../vehicles.html" title="Veículos" aria-label="Veículos"><i data-lucide="truck"></i></a>
+      <a href="../reports.html" title="Relatórios" aria-label="Relatórios"><i data-lucide="bar-chart-3"></i></a>
+      <a class="active module-external" href="index.html" title="Expedição" aria-label="Expedição"><i data-lucide="route"></i></a>
+      <a class="module-external" href="../etiquetas/index.html" title="Etiquetas" aria-label="Etiquetas"><i data-lucide="tags"></i></a>
+    </nav>
+  </aside>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" aria-label="Fina Estampa">
+        <img src="assets/img/favicon.png" alt="" width="48" height="48">
+        <span>
+          <strong>FINA ESTAMPA</strong>
+          <small>CONTROLE DE EXPEDIÇÃO</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <span class="update-status"><i></i><span id="lastUpdate">Dados atualizados</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-title">
+      <div>
+        <span class="eyebrow">VISÃO GERAL</span>
+        <h1>Painel de Expedição</h1>
+        <p>Saídas, volumes e destinos de 2024 a 2026.</p>
+      </div>
+      <div class="database-badge">
+        <span>BASE VÁLIDA PARA ANÁLISE</span>
+        <strong id="databaseTrips">0 saídas</strong>
+        <small id="databaseVolumes">0 volumes</small>
+        <em id="databaseAudit"></em>
+      </div>
+    </section>
+
+    <section class="monthly-update-notice" aria-label="Atualização dos dados">
+      <strong>Atualização mensal</strong>
+      <span>Esta página é atualizada mensalmente, todo dia 30.</span>
+    </section>
+
+    <section class="year-comparison" aria-labelledby="yearComparisonTitle">
+      <div class="comparison-heading">
+        <div>
+          <span class="section-label">COMPARAÇÃO DE PERÍODOS</span>
+          <h2 id="yearComparisonTitle">Compare os períodos desejados</h2>
+          <p id="yearComparisonDescription">Escolha um ano e quantos meses quiser em cada período.</p>
+        </div>
+        <div class="comparison-guide">
+          <span><i class="guide-cars"></i> Carros</span>
+          <span><i class="guide-volumes"></i> Volumes</span>
+        </div>
+      </div>
+      <div class="period-comparison-controls">
+        <fieldset class="period-card period-a">
+          <legend>Período A</legend>
+          <label class="field"><span>Ano</span><select id="periodAYear"></select></label>
+          <div class="period-months" id="periodAMonths" aria-label="Meses do período A"></div>
+        </fieldset>
+        <div class="versus-badge" aria-hidden="true">VS</div>
+        <fieldset class="period-card period-b">
+          <legend>Período B</legend>
+          <label class="field"><span>Ano</span><select id="periodBYear"></select></label>
+          <div class="period-months" id="periodBMonths" aria-label="Meses do período B"></div>
+        </fieldset>
+      </div>
+      <div class="period-summary" id="periodSummary" aria-live="polite"></div>
+      <div class="year-summary-grid" id="yearSummary"></div>
+    </section>
+
+    <section class="primary-grid">
+      <article class="panel comparison-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-label">VISUALIZAÇÃO DO COMPARATIVO</span>
+            <h2 id="comparisonTitle">Resultado dos períodos selecionados</h2>
+            <p>O gráfico representa os mesmos números dos cartões acima.</p>
+          </div>
+          <div class="metric-toggle" aria-label="Métrica do gráfico">
+            <button class="active" type="button" data-metric="trips">Carros</button>
+            <button type="button" data-metric="volumes">Volumes</button>
+          </div>
+        </div>
+        <div class="chart-wrap main-chart">
+          <canvas id="comparisonChart" role="img" aria-label="Comparação anual"></canvas>
+        </div>
+        <div class="chart-legend" id="comparisonLegend"></div>
+      </article>
+
+      <aside class="panel ranking-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-label">DESTINOS</span>
+            <h2>Mais volumes</h2>
+            <p>Ranking combinado dos períodos A e B.</p>
+          </div>
+        </div>
+        <div class="ranking-list" id="destinationRanking"></div>
+      </aside>
+    </section>
+
+    <section class="secondary-grid">
+      <article class="panel trend-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-label">HISTÓRICO</span>
+            <h2>Saídas por mês</h2>
+            <p>Evolução da quantidade de carros expedidos.</p>
+          </div>
+        </div>
+        <div class="chart-wrap trend-chart">
+          <canvas id="trendChart" role="img" aria-label="Saídas mensais"></canvas>
+        </div>
+        <div class="chart-legend" id="trendLegend"></div>
+      </article>
+
+      <aside class="panel insight-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-label">LEITURA OPERACIONAL</span>
+            <h2>2026 em outro ritmo</h2>
+            <p>Maio e junho comparados aos mesmos períodos de 2024 e 2025.</p>
+          </div>
+        </div>
+        <div class="insight-list" id="insightList"></div>
+      </aside>
+    </section>
+
+    <section class="panel driver-panel" aria-labelledby="driverPanelTitle">
+      <div class="panel-header driver-header">
+        <div>
+          <span class="section-label">MOTORISTAS</span>
+          <h2 id="driverPanelTitle">Destinos por motorista</h2>
+          <p>Selecione o período para ver quantos destinos cada motorista fez.</p>
+        </div>
+        <div class="driver-filters">
+          <label class="field"><span>Data inicial</span><input type="date" id="driverStartDate"></label>
+          <label class="field"><span>Data final</span><input type="date" id="driverEndDate"></label>
+        </div>
+      </div>
+      <div class="driver-summary" id="driverPeriodSummary" aria-live="polite"></div>
+      <div class="driver-table-wrap">
+        <table class="driver-table">
+          <thead>
+            <tr>
+              <th>Motorista</th>
+              <th>Destinos</th>
+              <th>Carregamentos</th>
+              <th>Volumes</th>
+            </tr>
+          </thead>
+          <tbody id="driverRanking"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel calendar-panel">
+      <div class="panel-header calendar-header">
+        <div>
+          <span class="section-label">AGENDA DE CARREGAMENTOS</span>
+          <h2>Calendário da expedição</h2>
+          <p>Navegue pelos meses para ver loja e volumes carregados em cada dia.</p>
+        </div>
+        <div class="calendar-controls">
+          <button type="button" id="calendarPrev" aria-label="Mês anterior">‹</button>
+          <strong id="calendarTitle"></strong>
+          <button type="button" id="calendarNext" aria-label="Próximo mês">›</button>
+          <button class="calendar-today" type="button" id="calendarToday">Mês atual</button>
+        </div>
+      </div>
+      <div class="calendar-summary" id="calendarSummary"></div>
+      <div class="calendar-scroll">
+        <div class="calendar-weekdays" aria-hidden="true">
+          <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+      <div class="calendar-list" id="calendarList"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/img/favicon.png" alt="" width="42" height="42">
+        <span><strong>FINA ESTAMPA</strong><small>PAINEL DE EXPEDIÇÃO</small></span>
+      </div>
+      <p>Expedição em Sinergia com<br><strong>Time de Tecnologia</strong></p>
+      <p class="footer-update">Dados de 2024 a 2026<br><span id="footerUpdate"></span></p>
+    </div>
+  </footer>
+
+  <script src="data/expeditions.js"></script>
+  <script src="js/app.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

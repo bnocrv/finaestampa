@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatórios | Carregamento Operacional</title>
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/icons/favicon.png" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>window.SUPABASE_URL = "https://ebtawenbhgpbdfjhvbxv.supabase.co"; window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVidGF3ZW5iaGdwYmRmamh2Ynh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTQ3NjAsImV4cCI6MjEwMjI5MDc2MH0.NaNBdSj4zwyW9koy8HBF5w0Yu20wW60EjCGFQ4xWeas";</script>
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/reports.js"></script>
+  </head>
+  <body data-app-name="Relatórios" data-page="reports">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-header"><div class="brand"><img src="assets/icons/favicon.png" alt="Fina Estampa" /></div></div>
+        <nav class="sidebar-nav">
+          <div class="nav-group" data-nav-group="carregamento">
+            <button class="nav-item nav-group-toggle" type="button" data-nav-group-toggle title="Recolher Carregamento" aria-label="Recolher Carregamento" aria-expanded="true"><i class="nav-group-chevron" data-lucide="chevron-right" aria-hidden="true"></i></button>
+            <div class="nav-group-items">
+              <a class="nav-item" href="index.html" title="Visão Geral" aria-label="Visão Geral"><i data-lucide="layout-grid"></i><span>Visão Geral</span></a>
+              <a class="nav-item" href="table.html" title="Planilha" aria-label="Planilha"><i data-lucide="table"></i><span>Planilha</span></a>
+              <a class="nav-item" href="employees.html" title="Funcionários" aria-label="Funcionários"><i data-lucide="users"></i><span>Funcionários</span></a>
+              <a class="nav-item" href="vehicles.html" title="Veículos" aria-label="Veículos"><i data-lucide="truck"></i><span>Veículos</span></a>
+              <a class="nav-item active" href="reports.html" title="Relatórios" aria-label="Relatórios"><i data-lucide="bar-chart-3"></i><span>Relatórios</span></a>
+            </div>
+          </div>
+          <a class="nav-item nav-item-external" href="expedicao/index.html" title="Expedição" aria-label="Expedição"><i data-lucide="route"></i><span>Expedição</span></a>
+          <a class="nav-item nav-item-external" href="etiquetas/index.html" title="Etiquetas" aria-label="Etiquetas"><i data-lucide="tags"></i><span>Etiquetas</span></a>
+          
+        </nav>
+        <div class="sidebar-footer"><button class="nav-item" id="logoutBtn" title="Sair" aria-label="Sair"><i data-lucide="log-out"></i><span>Sair</span></button></div>
+      </aside>
+      <main class="app-main">
+        <header class="topbar"><div class="topbar-inner"><div class="page-title">Relatórios</div><div class="topbar-actions"><button class="header-btn" id="exportReportBtn"><i data-lucide="download"></i>Exportar CSV</button><button class="header-btn" data-theme-toggle aria-label="Alternar tema"><i data-lucide="moon"></i></button><div class="header-profile"><div class="avatar" style="width:32px;height:32px;">FE</div><div class="hide-mobile"><strong>Operação</strong></div></div></div></div></header>
+        <div class="page-content">
+          <div class="page-shell">
+            <section class="toolbar">
+              <div class="toolbar-group">
+                <label class="date-filter">Início <input class="date-input" id="reportStart" type="date" /></label>
+                <label class="date-filter">Fim <input class="date-input" id="reportEnd" type="date" /></label>
+              </div>
+            </section>
+            <section class="stats-grid report-stats">
+              <article class="stat-card"><div class="label"><span>Total de carregamentos</span><i data-lucide="truck"></i></div><div class="value" id="reportTotalLoads">0</div></article>
+              <article class="stat-card"><div class="label"><span>Total de volumes</span><i data-lucide="package"></i></div><div class="value" id="reportTotalVolumes">0</div></article>
+              <article class="stat-card"><div class="label"><span>Média por carregamento</span><i data-lucide="activity"></i></div><div class="value" id="reportAverage">0</div></article>
+            </section>
+            <section class="grid-2">
+              <article class="chart-card"><div class="chart-header"><h3>Desempenho por veículo</h3></div><div id="vehiclesReportList"></div></article>
+              <article class="chart-card"><div class="chart-header"><h3>Participação dos funcionários</h3></div><div id="employeesReportList"></div></article>
+            </section>
+          </div>
+        </div>
+      <footer class="app-footer"><p>Trabalhando juntos, entregando resultados.</p><span>FINA ESTAMPA v1.0 • 2026</span></footer></main>
+    </div>
+    <div class="toast-stack"></div>
+    <script>lucide.createIcons();</script>
+  </body>
+</html>
+

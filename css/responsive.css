@@ -1,0 +1,47 @@
+@media (max-width: 900px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .topbar-actions {
+    gap: 8px;
+  }
+
+  .search-wrap {
+    width: 180px;
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-btn,
+  .header-profile {
+    padding: 9px 12px;
+  }
+
+  .topbar-inner {
+    gap: 10px;
+  }
+
+  .page-title {
+    font-size: 1.2rem;
+  }
+
+  .metric-row,
+  .report-stats {
+    grid-template-columns: 1fr;
+  }
+}
