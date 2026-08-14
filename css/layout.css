@@ -49,31 +49,6 @@
   flex: 1;
 }
 
-.nav-group,
-.nav-group-items {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.nav-group {
-  gap: 10px;
-}
-
-.nav-group-items {
-  gap: 10px;
-  overflow: hidden;
-  max-height: 360px;
-  transition: max-height var(--transition), opacity var(--transition), transform var(--transition);
-}
-
-.nav-group.is-collapsed .nav-group-items {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-}
-
 .nav-item {
   position: relative;
   display: flex;
@@ -87,36 +62,7 @@
   color: rgba(255,255,255,0.72);
   background: transparent;
   transition: all var(--transition);
-}
-
-.nav-group-toggle {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  color: white;
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
-  display: grid;
-  place-items: center;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.16);
-}
-
-.nav-group-toggle .nav-group-chevron {
-  position: static;
-  width: 18px;
-  height: 18px;
-  opacity: 0.95;
-  stroke-width: 2.6;
-  transition: transform var(--transition);
-}
-
-.nav-group.is-collapsed .nav-group-toggle .nav-group-chevron {
-  transform: rotate(-180deg);
-}
-
-.nav-group:has(.nav-item.active) .nav-group-toggle {
-  border-color: rgba(255, 0, 0, 0.28);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+  cursor: pointer;
 }
 
 .nav-item span {

@@ -15,28 +15,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     img.src = window.APP_PATHS?.logo || 'assets/images/logo.png';
   });
 
-  document.querySelectorAll('[data-nav-group]').forEach(group => {
-    const key = `navGroup:${group.dataset.navGroup || 'default'}`;
-    const toggle = group.querySelector('[data-nav-group-toggle]');
-    const savedState = localStorage.getItem(key);
-    const collapsed = savedState === 'collapsed';
-
-    group.classList.toggle('is-collapsed', collapsed);
-    toggle?.setAttribute('aria-expanded', String(!collapsed));
-    if (toggle) {
-      toggle.title = collapsed ? 'Expandir' : 'Recolher';
-      toggle.setAttribute('aria-label', toggle.title);
-    }
-
-    toggle?.addEventListener('click', () => {
-      const isCollapsed = group.classList.toggle('is-collapsed');
-      localStorage.setItem(key, isCollapsed ? 'collapsed' : 'expanded');
-      toggle.setAttribute('aria-expanded', String(!isCollapsed));
-      toggle.title = isCollapsed ? 'Expandir' : 'Recolher';
-      toggle.setAttribute('aria-label', toggle.title);
-    });
-  });
-
   document.querySelector('#logoutBtn')?.addEventListener('click', async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
