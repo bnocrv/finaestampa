@@ -1,6 +1,102 @@
 import { supabase, isSupabaseConfigured } from './supabase.js';
 import { showToast } from './utils.js';
 
+let redirectionInProgress = false;
+
+async function checkAuthAndRedirect() {
+  if (redirectionInProgress) return;
+  redirectionInProgress = true;
+
+  const isLoginPage = window.location.pathname.includes('login.html');
+  const isRedirectPage = document.body.dataset.page === 'redirect';
+
+  // Página de redirect (index.html)
+  if (isRedirectPage) {
+    const configured = await isSupabaseConfigured();
+    
+    if (!configured) {
+      console.warn('Supabase not configured, redirecting to login');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 500);
+      return;
+    }
+
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (session && !error) {
+        console.log('Session found, redirecting to table');
+        setTimeout(() => {
+          window.location.href = 'table.html';
+        }, 500);
+      } else {
+        console.warn('No session, redirecting to login');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 500);
+      }
+    } catch (error) {
+      console.error('Session check error:', error.message);
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 500);
+    }
+    return;
+  }
+
+  // Página de login
+  if (isLoginPage) {
+    const configured = await isSupabaseConfigured();
+    
+    if (!configured) {
+      console.warn('Supabase not configured on login page');
+      redirectionInProgress = false;
+      return;
+    }
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        console.log('Session found on login page, redirecting to table');
+        setTimeout(() => {
+          window.location.href = 'table.html';
+        }, 500);
+        return;
+      }
+    } catch (error) {
+      console.error('Session check on login page:', error.message);
+    }
+    redirectionInProgress = false;
+    return;
+  }
+
+  // Páginas protegidas (table, employees, vehicles, reports, etc)
+  const configured = await isSupabaseConfigured();
+  
+  if (!configured) {
+    console.warn('Supabase not configured on protected page');
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 500);
+    return;
+  }
+
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error || !session) {
+      console.warn('No valid session on protected page, redirecting to login');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 500);
+    }
+  } catch (error) {
+    console.error('Session check error on protected page:', error.message);
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 500);
+  }
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   const appName = document.body.dataset.appName || 'Carregamento Operacional';
   document.title = appName;
@@ -16,71 +112,20 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   document.querySelector('#logoutBtn')?.addEventListener('click', async () => {
+    redirectionInProgress = true;
     const { error } = await supabase.auth.signOut();
     if (error) {
       showToast(error.message || 'Erro ao sair.', 'error');
+      redirectionInProgress = false;
       return;
     }
     setTimeout(() => {
       window.location.href = 'login.html';
-    }, 300);
+    }, 500);
   });
 
-  // Detectar página atual
-  const isLoginPage = window.location.pathname.includes('login.html');
-  const isRedirectPage = document.body.dataset.page === 'redirect';
-
-  // Se for página de redirect (index.html), redirecionar com base em autenticação
-  if (isRedirectPage) {
-    const configured = await isSupabaseConfigured();
-    if (!configured) {
-      window.location.href = 'login.html';
-      return;
-    }
-
-    try {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (session && !error) {
-        window.location.href = 'table.html';
-      } else {
-        window.location.href = 'login.html';
-      }
-    } catch (error) {
-      console.warn('Session check error:', error.message);
-      window.location.href = 'login.html';
-    }
-    return; // Não continuar se for página de redirect
-  }
-
-  // Para outras páginas (excluindo login)
-  if (!isLoginPage) {
-    const configured = await isSupabaseConfigured();
-    if (!configured) {
-      window.location.href = 'login.html';
-      return;
-    }
-
-    try {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error || !session) {
-        window.location.href = 'login.html';
-      }
-    } catch (error) {
-      console.warn('Session check error:', error.message);
-      window.location.href = 'login.html';
-    }
-  } else {
-    // Se estiver na página de login E houver uma sessão válida, redirecionar para principal
-    const configured = await isSupabaseConfigured();
-    if (configured) {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          window.location.href = 'table.html';
-        }
-      } catch (error) {
-        console.warn('Session check on login page:', error.message);
-      }
-    }
-  }
+  // Executar check de autenticação com delay pequeno
+  setTimeout(() => {
+    checkAuthAndRedirect();
+  }, 100);
 });

@@ -68,7 +68,9 @@
 
         if (data.session) {
           showToast('Login realizado com sucesso.', 'success');
-          window.location.href = 'index.html';
+          setTimeout(() => {
+            window.location.href = 'table.html';
+          }, 800);
         }
       });
 
